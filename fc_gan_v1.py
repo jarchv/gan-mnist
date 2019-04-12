@@ -13,11 +13,11 @@ def generator_model(Z, reuse = None):
 	# tf.variable_scope :  will add scope as a prefix to all variables and operations
 	with tf.variable_scope('gen', reuse = reuse):
 		hidden1 = tf.layers.dense(	inputs 		= Z,
-									units  		= 1200, # 1200
+									units  		= 128, # 1200
 									activation 	= tf.nn.leaky_relu)
 
 		hidden2 = tf.layers.dense(	inputs 		= hidden1,
-									units		= 1200, # 1200
+									units		= 128, # 1200
 									activation	= tf.nn.leaky_relu)
 
 		output 	= tf.layers.dense( 	inputs 		= hidden2,
@@ -29,16 +29,18 @@ def generator_model(Z, reuse = None):
 def discriminator_model(X, reuse = None):
 	with tf.variable_scope('dis', reuse = reuse):
 		hidden1 = tf.layers.dense(	inputs 		= X,
-									units  		= 240, # 240
+									units  		= 256, # 240
 									activation 	= tf.nn.leaky_relu)
 
+		hidden1 = tf.nn.dropout(hidden1, keep_prob = 0.5)
 		#hidden1 = tf.contrib.layers.maxout( inputs  	= hidden1,
 		#									num_units	= 5)
 
 		hidden2 = tf.layers.dense(	inputs 		= hidden1,
-									units		= 240, # 240
+									units		= 256, # 240
 									activation	= tf.nn.leaky_relu)
 
+		hidden2 = tf.nn.dropout(hidden2, keep_prob = 0.5)
 		#hidden2 = tf.contrib.layers.maxout( inputs  	= hidden2,
 		#									num_units	= 5)
 
