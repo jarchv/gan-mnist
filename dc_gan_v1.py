@@ -157,8 +157,8 @@ with tf.Session() as sess:
 			#images_feed    = images_feed * 2.0 - 1.0
 
 
-			#z 			   = np.random.normal(size = (batch_size, 100))
-			z              = np.random.uniform(low = -1.0,  high = 1.0, size = (batch_size, 100))
+			z 			   = np.random.normal(size = (batch_size, 100))
+			#z              = np.random.uniform(low = -1.0,  high = 1.0, size = (batch_size, 100))
 			_, dis_loss_ep = sess.run([dis_trainer, dis_loss], feed_dict = {X : images_feed, Zin : z})
 			_, gen_loss_ep = sess.run([gen_trainer, gen_loss], feed_dict = {Zin : z})
 
@@ -167,13 +167,14 @@ with tf.Session() as sess:
 
 		print('epoch {:4d}, dis_loss : {:.7f}, gen_loss : {:.7f}'.format(epoch, dis_loss_t, gen_loss_t))
 
-		sample_z   = np.random.uniform(low = -1.0, high = 1.0, size = (1, 100))
-		#sample_z   = np.random.normal(size = (1, 100))
-		gen_sample = sess.run(generator_model(Zin, reuse = True), feed_dict = {Zin : sample_z})
+		if (epoch % 100 == 0):
+			#sample_z   = np.random.uniform(low = -1.0, high = 1.0, size = (1, 100))
+			sample_z   = np.random.normal(size = (1, 100))
+			gen_sample = sess.run(generator_model(Zin, reuse = True), feed_dict = {Zin : sample_z})
 
-		print(gen_sample.shape)
-		syn_sample = np.reshape(gen_sample, (28, 28))
-		print(syn_sample.shape)
-		print(syn_sample)
-		plt.imshow(syn_sample)
-		plt.show()
+			#print(gen_sample.shape)
+			syn_sample = np.reshape(gen_sample, (28, 28))
+			print(syn_sample.shape)
+			print(syn_sample)
+			plt.imshow(syn_sample, cmap='gray')
+			plt.show()
